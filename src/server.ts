@@ -140,7 +140,7 @@ let books: Book[] = [
     }
 ];
 
-app.get("/books", (req: Request, res: Response) => {
+app.get("/books", (req, res) => {
     const keyword = req.query.keyword as string;
 
     if (keyword) {
@@ -154,6 +154,17 @@ app.get("/books", (req: Request, res: Response) => {
 });
 
 
+app.get("/books/:id", (req, res) => {
+    const id = parseInt(req.params.id);
+    const book = books.find(b => b.id === id);
+
+    if (book) {
+        res.json(book);
+    } else {
+        res.status(404).send("Book not found");
+    }
+});
+
 
 app.get("/events", (req, res) => {
     if (req.query.category) {
@@ -166,27 +177,15 @@ app.get("/events", (req, res) => {
 });
 
 
-
-
-
-app.get('/', (req: Request, res: Response) => {
-    res.send('Hello World!')
-})
-
-// app.get('/test', (req, res) => {
-//        let returnObj = {
-//                name: 'test',
-//                age: 20,
-//                address: 'Thai'
-//        }
-//        res.send(returnObj);
-// })
-
-app.get('/test', (req: Request, res: Response) => {
-    const id = req.query.id;
-    const output = `id: ${id}`;
-    res.send(output);
-})
+app.get("/events/:id", (req, res) => {
+    const id = parseInt(req.params.id);
+    const event = events.find((event) => event.id === id);
+    if (event) {
+        res.json(event);
+    } else {
+        res.status(404).send("Event not found");
+    }
+});
 
 
 app.listen(port, () => {
