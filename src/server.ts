@@ -140,15 +140,32 @@ let books: Book[] = [
     }
 ];
 
-app.get("/books", (req, res) => {
-    res.json(books);
+app.get("/books", (req: Request, res: Response) => {
+    const keyword = req.query.keyword as string;
+
+    if (keyword) {
+        const filteredBooks = books.filter(book =>
+            book.title.toLowerCase().startsWith(keyword.toLowerCase())
+        );
+        res.json(filteredBooks);
+    } else {
+        res.json(books);
+    }
 });
 
 
 
 app.get("/events", (req, res) => {
-    res.json(events);
+    if (req.query.category) {
+        const category = req.query.category;
+        const filteredEvents = events.filter((event) => event.category === category);
+        res.json(filteredEvents);
+    } else {
+        res.json(events);
+    }
 });
+
+
 
 
 
